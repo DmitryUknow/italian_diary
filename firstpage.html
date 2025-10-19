@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Mio Diario Bilingue | Двуязычный дневник</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2E8B57;
+            --secondary-color: #1E90FF;
+            --accent-color: #FF6B6B;
+            --text-dark: #2D3748;
+            --text-light: #4A5568;
+            --background: #FAFAFA;
+            --card-bg: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .title {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            /*-webkit-background-clip: text;*/
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            font-weight: 300;
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            background: var(--card-bg);
+            color: var(--text-dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+        }
+
+        .lang-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        /* Event Cards */
+        .events-grid {
+            display: grid;
+            gap: 30px;
+        }
+
+        .event-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 35px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .event-title {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .event-date {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .event-date::before {
+            content: "📅";
+            font-size: 1.1rem;
+        }
+
+        .event-content {
+            margin-bottom: 25px;
+        }
+
+        .text-italian {
+            color: var(--primary-color);
+            font-style: italic;
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .text-russian {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 3px solid var(--secondary-color);
+        }
+
+        /* Vocabulary Section */
+        .vocabulary-card {
+            background: linear-gradient(135deg, #FFF9C4, #FFECB3);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-top: 20px;
+            border: 1px solid #FFD54F;
+        }
+
+        .vocabulary-title {
+            color: #E65100;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+        }
+
+        .vocabulary-title::before {
+            content: "📚";
+            font-size: 1.3rem;
+        }
+
+        .word-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .word-item {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid #E65100;
+        }
+
+        /* Learning Section */
+        .learning-section {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 35px;
+            margin-top: 50px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        .learning-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .learning-card {
+            background: var(--background);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .learning-card:hover {
+            transform: scale(1.05);
+        }
+
+        .learning-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            color: white;
+            font-weight: 300;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .title {
+                font-size: 2.2rem;
+            }
+            
+            .event-card {
+                padding: 25px;
+            }
+            
+            .learning-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .word-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .event-card {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">Il Mio Diario Bilingue</h1>
+            <p class="subtitle">Изучаю HTML и итальянский через личный дневник | Apprendo HTML e italiano attraverso il diario personale</p>
+        </header>
+
+        <!-- Language Switcher -->
+        <div class="language-switcher">
+            <button class="lang-btn active" onclick="showBoth()">Оба языка</button>
+            <button class="lang-btn" onclick="showItalian()">Italiano</button>
+            <button class="lang-btn" onclick="showRussian()">Русский</button>
+        </div>
+
+        <!-- Events Grid -->
+        <div class="events-grid">
+            <!-- Event 1 -->
+            <article class="event-card">
+                <h2 class="event-title">Il Mio Primo Giorno di Studio</h2>
+                <div class="event-date">1 Ottobre 2023 | 1 октября 2023</div>
+                
+                <div class="event-content">
+                    <p class="text-italian">Oggi ho iniziato a studiare HTML e CSS! È molto eccitante creare qualcosa con le mie mani.</p>
+                    <p class="text-russian">Сегодня я начал(а) изучать HTML и CSS! Очень захватывающе создавать что-то своими руками.</p>
+                </div>
+
+                <div class="vocabulary-card">
+                    <h3 class="vocabulary-title">Nuovo Vocabolario | Новые слова</h3>
+                    <div class="word-list">
+                        <div class="word-item">
+                            <strong>studiare</strong> - изучать
+                        </div>
+                        <div class="word-item">
+                            <strong>eccitante</strong> - захватывающе
+                        </div>
+                        <div class="word-item">
+                            <strong>creare</strong> - создавать
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Event 2 -->
+            <article class="event-card">
+                <h2 class="event-title">Una Passeggiata nel Parco</h2>
+                <div class="event-date">5 Ottobre 2023 | 5 октября 2023</div>
+                
+                <div class="event-content">
+                    <p class="text-italian">Ieri sono andato/a a fare una passeggiata nel parco. Il tempo era magnifico e gli alberi stavano cambiando colore.</p>
+                    <p class="text-russian">Вчера я ходил(а) на прогулку в парк. Погода была великолепной, и деревья меняли цвет.</p>
+                </div>
+
+                <div class="vocabulary-card">
+                    <h3 class="vocabulary-title">Nuovo Vocabolario | Новые слова</h3>
+                    <div class="word-list">
+                        <div class="word-item">
+                            <strong>passeggiata</strong> - прогулка
+                        </div>
+                        <div class="word-item">
+                            <strong>magnifico</strong> - великолепный
+                        </div>
+                        <div class="word-item">
+                            <strong>alberi</strong> - деревья
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Event 3 -->
+            <article class="event-card">
+                <h2 class="event-title">Progresso nello Studio</h2>
+                <div class="event-date">10 Ottobre 2023 | 10 октября 2023</div>
+                
+                <div class="event-content">
+                    <p class="text-italian">Oggi ho imparato come creare un layout responsive con CSS Grid. Mi sento molto soddisfatto/a del mio progresso!</p>
+                    <p class="text-russian">Сегодня я научился(ась) создавать адаптивный макет с помощью CSS Grid. Я очень доволен(льна) своим прогрессом!</p>
+                </div>
+
+                <div class="vocabulary-card">
+                    <h3 class="vocabulary-title">Nuovo Vocabolario | Новые слова</h3>
+                    <div class="word-list">
+                        <div class="word-item">
+                            <strong>progresso</strong> - прогресс
+                        </div>
+                        <div class="word-item">
+                            <strong>soddisfatto/a</strong> - довольный/довольная
+                        </div>
+                        <div class="word-item">
+                            <strong>layout</strong> - макет
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <!-- Learning Section -->
+        <section class="learning-section">
+            <h2 class="section-title">La Mia Avventura di Apprendimento</h2>
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 30px;">
+                Путешествие в мир веб-разработки и итальянского языка | Il viaggio nel mondo dello sviluppo web e della lingua italiana
+            </p>
+            
+            <div class="learning-grid">
+                <div class="learning-card">
+                    <h4>📖 Vocabolario del Giorno</h4>
+                    <p><strong>imparare</strong> - учиться</p>
+                    <p><em>"Voglio imparare ogni giorno"</em></p>
+                </div>
+                
+                <div class="learning-card">
+                    <h4>🎯 Obiettivi | Цели</h4>
+                    <p>• Creare 10 pagine web</p>
+                    <p>• Imparare 500 parole italiane</p>
+                </div>
+                
+                <div class="learning-card">
+                    <h4>💡 Consigli Utili | Полезные советы</h4>
+                    <p>Pratica ogni giorno la scrittura in italiano nel tuo diario!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2023 Il Mio Diario Bilingue | Создано с ❤️ для изучения HTML и итальянского</p>
+        </footer>
+    </div>
+
+    <script>
+        function setActiveButton(activeBtn) {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            activeBtn.classList.add('active');
+        }
+
+        function showItalian() {
+            document.querySelectorAll('.text-italian').forEach(el => el.style.display = 'block');
+            document.querySelectorAll('.text-russian').forEach(el => el.style.display = 'none');
+            setActiveButton(event.target);
+        }
+
+        function showRussian() {
+            document.querySelectorAll('.text-italian').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.text-russian').forEach(el => el.style.display = 'block');
+            setActiveButton(event.target);
+        }
+
+        function showBoth() {
+            document.querySelectorAll('.text-italian').forEach(el => el.style.display = 'block');
+            document.querySelectorAll('.text-russian').forEach(el => el.style.display = 'block');
+            setActiveButton(event.target);
+        }
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.event-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+            });
+        });
+    </script>
+</body>
+</html>
